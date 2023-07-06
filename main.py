@@ -1,5 +1,4 @@
 import os
-
 import ai21
 import streamlit as st
 from dotenv import load_dotenv
@@ -9,68 +8,39 @@ load_dotenv()
 
 API_KEY = os.getenv("AI21_LABS_API_KEY")
 
-ai21.api_key = 'wpWtgvZuIZIVzegERbOlbvjAKC49SLEm'
+# Set the API key in the authorization header
+ai21.api_key = 'CTxVlNQnPWLulXWQFDAa78ong6KeiWcd'
 
-PROMPT = "Based on the description given, name the sport.\nDescription: {description}\n Sport name: "
+PROMPT = "Enter your business name: "
 
 # Initialization
 if "output" not in st.session_state:
-    st.session_state["output"] = "Output:"
+    st.session_state["output"] = ""
 
+def generate_keywords(business_name):
+    if not business_name:
+        return
 
-def guess_sport(inp):
-    if not len(inp):
-        return None
-
-    prompt = PROMPT.format(description=inp)
+    prompt = PROMPT + business_name
 
     response = ai21.Completion.execute(
-    model="j2-ultra",
-    custom_model="seo",
-    prompt=prompt,
-    numResults=1,
-    maxTokens=200,
-    temperature=0.7,
-    topKReturn=0,
-    topP=1,
-    countPenalty={
-        "scale": 0,
-        "applyToNumbers": False,
-        "applyToPunctuations": False,
-        "applyToStopwords": False,
-        "applyToWhitespaces": False,
-        "applyToEmojis": False
-    },
-    frequencyPenalty={
-        "scale": 0,
-        "applyToNumbers": False,
-        "applyToPunctuations": False,
-        "applyToStopwords": False,
-        "applyToWhitespaces": False,
-        "applyToEmojis": False
-    },
-    presencePenalty={
-        "scale": 0,
-        "applyToNumbers": False,
-        "applyToPunctuations": False,
-        "applyToStopwords": False,
-        "applyToWhitespaces": False,
-        "applyToEmojis": False
-    },
-    stopSequences=[]
-)
+        model="j2-jumbo",
+        custom_model="seoFinal",
+        prompt=prompt,
+        max_tokens=300,
+        temperature=0.6,
+        n=10,
+        stop=None,
+        log_level=None
+    )
 
     st.session_state["output"] = response.completions[0].data.text
     st.balloons()
 
+st.title("Keyword Generator")
+st.write("Enter your business name to generate related keywords for search engine optimization.")
 
-st.title("Search Engine Optimization Assistant")
-
-st.write(
-    "Type in your business or website description to receive keywords to boost your relevance!!"
-)
-
-
-inp = st.text_area("Enter your request here", height=100)
-st.button("Gue" "ss", on_click=guess_sport(inp))
-st.write(f"Answer: {st.session_state.output}")
+business_name = st.text_input("Enter your business name here")
+st.button("Generate Keywords", on_click=lambda: generate_keywords(business_name))
+st.write("Keywords:")
+st.write(st.session_state["output"])
