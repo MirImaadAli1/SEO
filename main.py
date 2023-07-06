@@ -17,11 +17,11 @@ st.write("Enter your business name to generate related keywords for search engin
 business_name = st.text_input("Enter your business name here")
 
 # dashboard features
-st.slider('Pick no. of words', 5, 30)
+st.slider('Pick no. of keywords', 5, 30)
 creativity_value = st.slider('Creativity level', 0.0, 1.0, 0.6, step=0.1)
 
 def generate_keywords():
-     st.write("coffee shop, Dubai, United Arab Emirates, Emirati coffee, Arabic coffee, tea, cappuccino, mocha, espresso, latte, barista, coffeehouse, specialty coffee, hummus, shawarma, coffee beans, roasted coffee, coffee grinder, coffee cup")
+     st.write("coffee shop, Dubai, United Arab Emirates, Emirati coffee, Arabic coffee, tea, cappuccino, mocha, espresso, latte, barista, coffeehouse, specialty coffee, coffee beans, roasted coffee, coffee grinder, coffee cup")
 
 if st.button("Generate Keywords"):
     st.subheader("Keywords:")
